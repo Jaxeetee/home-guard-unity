@@ -13,14 +13,9 @@ public class MyPlayerInputManager : MonoBehaviour
 
     public event Action<Vector2> onMovement;
     public event Action<Vector2> onMousePosition;
-    public event Action<float> onShoot;
-
     public event Action<float> onCamRotate;
-
-    // Start is called before the first frame update
-    private void Awake()
-    {
-    }
+    public event Action onShoot;
+    public event Action onReload;
 
     private void Start()
     {
@@ -33,11 +28,6 @@ public class MyPlayerInputManager : MonoBehaviour
     private void MainControls()
     {
         #region --== started ==--
-        _inputs.main.rotate_cam.performed += ctx =>
-        {
-            var value = ctx.ReadValue<float>();
-            onCamRotate?.Invoke(value);
-        };
         #endregion
 
         #region --== performed ==--
@@ -55,10 +45,19 @@ public class MyPlayerInputManager : MonoBehaviour
 
         _inputs.main.shoot.performed += ctx =>
         {
-            float value = ctx.ReadValue<float>();
-            onShoot?.Invoke(value);
+            onShoot?.Invoke();
         };
 
+        _inputs.main.rotate_cam.performed += ctx =>
+        {
+            float value = ctx.ReadValue<float>();
+            onCamRotate?.Invoke(value);
+        };
+
+        _inputs.main.reload.performed += ctx =>
+        {
+            onReload?.Invoke(); 
+        };
         #endregion
 
         #region --== canceled ==--
@@ -74,17 +73,6 @@ public class MyPlayerInputManager : MonoBehaviour
             onMousePosition?.Invoke(axis);
         };
 
-        _inputs.main.shoot.canceled += ctx =>
-        {
-            float value = ctx.ReadValue<float>();
-            onShoot?.Invoke(value);
-        };
-
-        _inputs.main.rotate_cam.canceled += ctx =>
-        {
-            var value = ctx.ReadValue<float>();
-            onCamRotate?.Invoke(value);
-        };
         #endregion
     }
 

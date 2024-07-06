@@ -42,7 +42,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""id"": ""57bce667-889a-452b-8258-358b4352e624"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -60,7 +60,16 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""id"": ""adcf1b3f-b4f8-4eef-86c7-33962a8a0c1e"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""reload"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ee608319-e0ea-4162-a41e-999dd88d8935"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -174,6 +183,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""rotate_cam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1987997-6800-4952-98b1-1f7b576efd66"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +206,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_main_shoot = m_main.FindAction("shoot", throwIfNotFound: true);
         m_main_look = m_main.FindAction("look", throwIfNotFound: true);
         m_main_rotate_cam = m_main.FindAction("rotate_cam", throwIfNotFound: true);
+        m_main_reload = m_main.FindAction("reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_main_shoot;
     private readonly InputAction m_main_look;
     private readonly InputAction m_main_rotate_cam;
+    private readonly InputAction m_main_reload;
     public struct MainActions
     {
         private @PlayerInputs m_Wrapper;
@@ -259,6 +281,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @shoot => m_Wrapper.m_main_shoot;
         public InputAction @look => m_Wrapper.m_main_look;
         public InputAction @rotate_cam => m_Wrapper.m_main_rotate_cam;
+        public InputAction @reload => m_Wrapper.m_main_reload;
         public InputActionMap Get() { return m_Wrapper.m_main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,6 +303,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @rotate_cam.started += instance.OnRotate_cam;
             @rotate_cam.performed += instance.OnRotate_cam;
             @rotate_cam.canceled += instance.OnRotate_cam;
+            @reload.started += instance.OnReload;
+            @reload.performed += instance.OnReload;
+            @reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -296,6 +322,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @rotate_cam.started -= instance.OnRotate_cam;
             @rotate_cam.performed -= instance.OnRotate_cam;
             @rotate_cam.canceled -= instance.OnRotate_cam;
+            @reload.started -= instance.OnReload;
+            @reload.performed -= instance.OnReload;
+            @reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -319,5 +348,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnRotate_cam(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

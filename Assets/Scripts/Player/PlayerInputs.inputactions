@@ -20,7 +20,7 @@
                     "id": "57bce667-889a-452b-8258-358b4352e624",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -38,7 +38,16 @@
                     "id": "adcf1b3f-b4f8-4eef-86c7-33962a8a0c1e",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "reload",
+                    "type": "PassThrough",
+                    "id": "ee608319-e0ea-4162-a41e-999dd88d8935",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -152,6 +161,17 @@
                     "action": "rotate_cam",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a1987997-6800-4952-98b1-1f7b576efd66",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
