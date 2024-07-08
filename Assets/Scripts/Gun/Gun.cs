@@ -62,9 +62,10 @@ public class Gun : MonoBehaviour,IDebugger
         {
             _canShoot = false;  
             elapsedTime += Time.deltaTime;
+            Log(elapsedTime.ToString());
             yield return null;
         }
-
+        _currentBullets = _magSize;
         _canShoot = true;
     }
 
