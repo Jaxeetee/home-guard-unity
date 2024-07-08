@@ -8,11 +8,6 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float _speed = 50f;
 
-    // void OnEnable()
-    // {
-    //     transform.rotation = Quaternion.identity;
-    //     Debug.Log("Bullet rotation after reset: " + transform.rotation.eulerAngles.ToString());
-    // }
     // Update is called once per frame
     void Update()
     {
