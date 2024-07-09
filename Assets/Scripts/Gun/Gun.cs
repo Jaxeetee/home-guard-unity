@@ -32,6 +32,7 @@ namespace Weapons {
         float _fireRate;
         bool _isReloading = false;
         bool _isShooting = false;
+        bool _pressedTrigger = false;
 
         void Start()
         {
@@ -53,20 +54,16 @@ namespace Weapons {
             _currentBullets = _magSize;
         }
 
-        // void Update()
-        // {
-        //     if (_isShooting)
-        //     {
-        //         Shoot();
-        //     }
-        // }
-
         private IEnumerator Shoot()
         {
             while (_isShooting)
             {
                 if (Time.time > _fireRate && !_isReloading && _currentBullets > 0)
                 {
+                    if (_fireMode == FireMode.SEMI)
+                    {
+                        if (_pressedTrigger) break;
+                    }
                     _fireRate = Time.time + _msBetweenShots / 1000;
                     GameObject bullet = PooledObject.GetObject(StringManager.BULLET_PISTOL);
                     bullet.transform.position = _muzzlePoint.position;
@@ -83,11 +80,13 @@ namespace Weapons {
         {
             _isShooting = true;
             StartCoroutine(Shoot());
+            _pressedTrigger = true;
         }
 
         public void onTriggerRelease()
         {
             _isShooting = false;
+            _pressedTrigger = false;
         }
 
         public IEnumerator Reload()
