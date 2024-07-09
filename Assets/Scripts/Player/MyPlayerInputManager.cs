@@ -14,7 +14,8 @@ public class MyPlayerInputManager : MonoBehaviour
     public event Action<Vector2> onMovement;
     public event Action<Vector2> onMousePosition;
     public event Action<float> onCamRotate;
-    public event Action onShoot;
+    public event Action onShootHold;
+    public event Action onShootRelease;
     public event Action onReload;
 
     private void Start()
@@ -45,7 +46,7 @@ public class MyPlayerInputManager : MonoBehaviour
 
         _inputs.main.shoot.performed += ctx =>
         {
-            onShoot?.Invoke();
+            onShootHold?.Invoke();
         };
 
         _inputs.main.rotate_cam.performed += ctx =>
@@ -71,6 +72,11 @@ public class MyPlayerInputManager : MonoBehaviour
         {
             Vector2 axis = ctx.ReadValue<Vector2>();
             onMousePosition?.Invoke(axis);
+        };
+
+        _inputs.main.shoot.canceled += ctx =>
+        {
+            onShootRelease?.Invoke();
         };
 
         #endregion

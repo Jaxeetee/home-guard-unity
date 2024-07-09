@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 4403341952972178500, guid: 6aa464fc61dfedb478064f37b885ee83, type: 3}
-  _speed: 14
+  _speed: 5
 --- !u!33 &9069783640012085318
 MeshFilter:
   m_ObjectHideFlags: 0

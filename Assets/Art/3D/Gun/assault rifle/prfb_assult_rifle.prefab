@@ -100,12 +100,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fbed1a6a3f14743b6b6cfa63c10806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bullet: {fileID: 2654705073666832511, guid: ac436d7f9cce01c4a850c958f975ab6e, type: 3}
-  _bulletSpawnPoint: {fileID: 1569103187579659930}
-  _bulletSpeed: 100
-  _fireRate: 0.1
+  _projectile: {fileID: 2654705073666832511, guid: ac436d7f9cce01c4a850c958f975ab6e, type: 3}
+  _muzzlePoint: {fileID: 1569103187579659930}
+  _projectileVelocity: 50
+  _msBetweenShots: 100
   _reloadTime: 2.5
   _magSize: 30
+  _fireMode: 1
 --- !u!1 &3723301403151020774
 GameObject:
   m_ObjectHideFlags: 0
