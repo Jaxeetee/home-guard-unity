@@ -7,12 +7,11 @@ using UnityEngine;
 namespace Weapons {
 public class GunController : MonoBehaviour
 {
-    [SerializeField] MyPlayerInputManager _input;
-    [SerializeField] Gun _starterGun;
-    [SerializeField] Gun _gun;
 
+    [SerializeField] MyPlayerInputManager _input;
+    [SerializeField] LayerMask _collisions;
+    [SerializeField] Gun _starterGun;
     Gun _equippedGun;
-    bool _canShoot = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +34,22 @@ public class GunController : MonoBehaviour
         _input.onReload -= ReloadGun;
     }
 
+    void Update()
+    {
+        // Ray ray = new Ray(transform.position, transform.forward);
+        // if (Physics.Raycast(ray, out var hit, 1f, _collisions))
+        // {
+        //     Vector3 incomingVec = hit.point - transform.position;
+
+        //     Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
+
+        //     Debug.DrawLine(transform.position, hit.point, Color.red);
+        //     Debug.DrawRay(hit.point, reflectVec, Color.green);
+        //     var direction = reflectVec - transform.position;
+        //     direction.y = 0;
+        //     transform.forward = direction;
+        // }
+    }
     private void EquipGun(Gun gun)
     {
         if (_equippedGun != null)
@@ -50,9 +65,7 @@ public class GunController : MonoBehaviour
     private void TriggerHold()
     {
         if (_equippedGun == null) return;
-            Debug.Log("SHOOTING");
-            _equippedGun.onTriggerHold();
-        
+            _equippedGun.onTriggerHold(); 
     }
 
     private void TriggerRelease()

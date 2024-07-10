@@ -11,9 +11,12 @@ namespace Weapons {
     {
         
         [Header("Projectile")]
+        [SerializeField] string _projectileKey;
         [SerializeField] Projectile _projectile;
         [SerializeField] Transform _muzzlePoint;
         [SerializeField] float _projectileVelocity;
+        [SerializeField] Material _trailMaterial;
+        [SerializeField] float _maxProjectileDistance;
 
         [Space]
         [Header("Gun stats")]
@@ -21,6 +24,10 @@ namespace Weapons {
         [SerializeField] float _reloadTime;
         [SerializeField] int _magSize;
         [SerializeField] FireMode _fireMode;
+
+        [Space]
+        [Header("Gun Collision Mask")]
+        [SerializeField] LayerMask _collisions;
 
         public FireMode fireMode
         {
@@ -33,20 +40,20 @@ namespace Weapons {
         bool _isReloading = false;
         bool _isShooting = false;
         bool _pressedTrigger = false;
+        RaycastHit? cachedRaycastHit;
+        float cachedRaycastTime;
+
+        GameObject _player;
 
         void Start()
         {
             PooledObject.NewObjectPool(StringManager.BULLET_PISTOL, _projectile.gameObject);
+            _player = GameObject.FindGameObjectWithTag("Player");
         }
 
         void OnEnable()
         {
-            Warning(_currentBullets.ToString());
-        }
-
-        void OnDisable()
-        {
-            
+            InitStats();
         }
 
         public void InitStats()
@@ -54,22 +61,43 @@ namespace Weapons {
             _currentBullets = _magSize;
         }
 
+        bool IsGunClipping()
+        {
+            float currentTime = Time.time;
+
+            // Check if cached raycast is valid (within a reasonable time threshold)
+            if (cachedRaycastHit.HasValue && currentTime - cachedRaycastTime < 0.1f) // Adjust threshold as needed
+            {
+                return cachedRaycastHit.Value.collider != null;
+            }
+            return Physics.Raycast(_player.transform.position, transform.forward, out var hit, 1.5f, _collisions);
+        }
+
         private IEnumerator Shoot()
         {
             while (_isShooting)
             {
-                if (Time.time > _fireRate && !_isReloading && _currentBullets > 0)
+                
+                if (Time.time > _fireRate)
                 {
                     if (_fireMode == FireMode.SEMI)
                     {
                         if (_pressedTrigger) break;
                     }
                     _fireRate = Time.time + _msBetweenShots / 1000;
-                    GameObject bullet = PooledObject.GetObject(StringManager.BULLET_PISTOL);
-                    bullet.transform.position = _muzzlePoint.position;
-                    bullet.transform.rotation = _muzzlePoint.rotation;
-                    bullet.GetComponent<Projectile>().SetSpeed(_projectileVelocity);
-                    this._currentBullets--;
+
+                    if (IsGunClipping())
+                    {
+                        _currentBullets--;
+                    }
+                    else 
+                    {
+                        GameObject bullet = PooledObject.GetObject(_projectileKey);
+                        bullet.transform.position = _muzzlePoint.position;
+                        bullet.transform.rotation = _muzzlePoint.rotation;
+                        bullet.GetComponent<Projectile>().InitializeProjectileStats(_projectileKey,_maxProjectileDistance, _projectileVelocity, _trailMaterial);
+                        _currentBullets--;
+                    }
                 }
                 yield return null;
 
@@ -78,7 +106,9 @@ namespace Weapons {
 
         public void onTriggerHold()
         {
-            _isShooting = true;
+            if (_isReloading || _currentBullets < 1) return;
+
+            _isShooting = true;         
             StartCoroutine(Shoot());
             _pressedTrigger = true;
         }

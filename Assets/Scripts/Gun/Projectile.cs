@@ -4,22 +4,80 @@ using UnityEngine;
 namespace Weapons {
     public class Projectile : MonoBehaviour
     {
-        float _speed = 50f;
+        [SerializeField] LayerMask _collisionMasks;
 
-        // Update is called once per frame
+        float _speed = 1f;
+        Vector3 _initialPosition;
+        float _maxDistance;
+        string _key;
+
+        void Start()
+        {
+            _initialPosition = transform.position;
+        }
+
+        void OnDisable()
+        {
+            GetComponentInChildren<TrailRenderer>().Clear();
+        }
+
         void Update()
         {
-            transform.Translate(transform.forward * _speed * Time.deltaTime, Space.World);
+            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+            CheckCollisions(.5f);
+            OnMaxDistanceReached();
         }
 
-
-        //TODO: Use raycasts instead of collision enter
-        void OnCollisionEnter(Collision other)
+        void OnMaxDistanceReached()
         {
-            PooledObject.ReturnToPool(StringManager.BULLET_PISTOL ,this.gameObject);
+            if (DidReachMaxDistance())
+                PooledObject.ReturnToPool(_key ,this.gameObject);
         }
 
-        public void SetSpeed(float speed) => _speed = speed;
+        bool DidReachMaxDistance()
+        {
+            return TraveledDistance() > _maxDistance;
+        }
+
+        float TraveledDistance()
+        {
+            return Vector3.Distance(_initialPosition, transform.position);
+        }
+
+        void CheckCollisions(float moveDistance)
+        {
+            Ray forwardRay = new Ray(transform.position, transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(forwardRay, out hit, moveDistance, _collisionMasks, QueryTriggerInteraction.Collide))
+            {
+                OnHitObject(hit);
+            }
+        }
+
+        void OnHitObject(RaycastHit hit)
+        {
+            PooledObject.ReturnToPool(_key ,this.gameObject);
+        }
+
+        public void InitializeProjectileStats(string key, float speed, float maxDistance, Material trailMaterial) 
+        {
+            _speed = speed;
+            _maxDistance = maxDistance;
+            GetComponentInChildren<Trail>().SetMaterial(trailMaterial);
+            _key = key; 
+
+
+            // Collider[] initialColliders = Physics.OverlapSphere(transform.position, .125f, _collisionMasks);
+            // Debug.Log($"is there initial collision? {initialColliders.Length}");
+            // if (initialColliders.Length > 0)
+            // {
+            //     RaycastHit hit;
+            //     Physics.Raycast(transform.position, initialColliders[0].transform.position, out hit);
+            //     Debug.Log(hit.collider.gameObject.name);
+            //     OnHitObject(hit);
+            // }
+        } 
     }
 }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3876569800603736916}
   - component: {fileID: 6670311983722010467}
   - component: {fileID: 6768532372925000710}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1512059350511285698}
   - component: {fileID: 3223023643221489319}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Gun Slot
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -142,7 +142,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 0}
-  _gun: {fileID: 0}
+  _collisions:
+    serializedVersion: 2
+    m_Bits: 0
+  _starterGun: {fileID: 7429102496269493691, guid: 69ea71be4ac1c3c4a938014ed494fe7b, type: 3}
 --- !u!1 &4899178139332704734
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,9 +161,10 @@ GameObject:
   - component: {fileID: 5452040636154524132}
   - component: {fileID: 9069783640012085318}
   - component: {fileID: 2024221779012660534}
-  m_Layer: 0
+  - component: {fileID: 5848684359451288831}
+  m_Layer: 7
   m_Name: Player Capsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,6 +232,9 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
+  _collisions:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5452040636154524132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,3 +299,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!195 &5848684359451288831
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899178139332704734}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

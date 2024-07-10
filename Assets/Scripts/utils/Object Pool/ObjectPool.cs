@@ -19,8 +19,6 @@ namespace MyUtils
         /// <param name="item"></param>
         /// <param name="parent"></param>
         /// <param name="amtOfCopies"></param>
-        /// <param name="expandable"></param>
-        /// <param name="status"></param>
         public ObjectPool(GameObject item, GameObject parent, int amtOfCopies = 10)
         {
             this._poolName = $"{item.name}(Clone)";
@@ -47,7 +45,7 @@ namespace MyUtils
                 GameObject copy = Object.Instantiate(_item) as GameObject;
                 copy.SetActive(false);
                 _copies.Push(copy);
-               // copy.transform.SetParent(_parent.transform);
+                copy.transform.SetParent(_parent.transform);
             }
         }
 
@@ -64,7 +62,7 @@ namespace MyUtils
             GameObject toUse = _copies.Pop();
             toUse.transform.SetParent(null);
             toUse.SetActive(true);
-            // toUse.transform.rotation = Quaternion.identity;
+            toUse.transform.rotation = Quaternion.identity;
             return toUse;
         }
 
@@ -85,9 +83,10 @@ namespace MyUtils
                 Error($"{returnObject.name} doesn't belong to this pool or doesn't have instanced pool");
                 return;
             }
+            returnObject.transform.SetParent(_parent.transform);
+            returnObject.transform.position = Vector3.zero;
             returnObject.SetActive(false);
             _copies.Push(returnObject);
-            // returnObject.transform.SetParent(_parent.transform);
         }
 
         public void Log(string message)

@@ -4,42 +4,34 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    
-    [SerializeField]
-    private MyPlayerInputManager _input;
-
-    [SerializeField]
-    private LayerMask _groundMask;
-    
-    private Camera _camera;
-
-    private Vector2 _mousePos;
-
-    private void Awake()
-    {
-    }
+    [SerializeField] MyPlayerInputManager _input;
+    [SerializeField] LayerMask _groundMask;
+    [SerializeField] LayerMask _collisions;
+    Camera _camera;
+    Vector2 _mousePos;
 
     void Start()
     {
         _camera = Camera.main;
     }
 
-    private void OnEnable() 
+    void OnEnable() 
     {
         _input.onMousePosition += GetInputLook;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         _input.onMousePosition -= GetInputLook;
     }
 
-    private void Update()
+    void Update()
     {
+        Debug.DrawRay(transform.position, transform.forward, Color.red);
         Aim();
     }
 
-    private void Aim()
+    void Aim()
     {
         var (success, position) = GetMousePosition();
         if (success)
@@ -50,9 +42,10 @@ public class MouseLook : MonoBehaviour
         }
     }
 
-    private (bool success, Vector3 position) GetMousePosition()
+    (bool success, Vector3 position) GetMousePosition()
     {
         var ray = _camera.ScreenPointToRay(_mousePos);
+        var forwardRay = new Ray(transform.position, transform.forward);
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, _groundMask))
         {
@@ -66,7 +59,7 @@ public class MouseLook : MonoBehaviour
         }
     }
 
-    private void GetInputLook(Vector2 axis)
+    void GetInputLook(Vector2 axis)
     {
         if (_input == null) return;
         _mousePos = axis;

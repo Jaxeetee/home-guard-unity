@@ -9,8 +9,7 @@ using UnityEngine.InputSystem;
 public class MyPlayerInputManager : MonoBehaviour
 {
     
-    private PlayerInputs _inputs;
-
+    PlayerInputs _inputs;
     public event Action<Vector2> onMovement;
     public event Action<Vector2> onMousePosition;
     public event Action<float> onCamRotate;
@@ -18,7 +17,7 @@ public class MyPlayerInputManager : MonoBehaviour
     public event Action onShootRelease;
     public event Action onReload;
 
-    private void Start()
+    void Start()
     {
         _inputs = new PlayerInputs();
 
@@ -26,7 +25,7 @@ public class MyPlayerInputManager : MonoBehaviour
         MainControls();
     }
 
-    private void MainControls()
+    void MainControls()
     {
         #region --== started ==--
         #endregion
