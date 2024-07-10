@@ -11,47 +11,47 @@ namespace Weapons {
     {
         
         [Header("Projectile")]
-        [SerializeField] string _projectileKey;
-        [SerializeField] Projectile _projectile;
-        [SerializeField] Transform _muzzlePoint;
-        [SerializeField] float _projectileVelocity;
-        [SerializeField] Material _trailMaterial;
-        [SerializeField] float _maxProjectileDistance;
+        [SerializeField] private string _projectileKey;
+        [SerializeField] private Projectile _projectile;
+        [SerializeField] private Transform _muzzlePoint;
+        [SerializeField] private float _projectileVelocity;
+        [SerializeField] private Material _trailMaterial;
+        [SerializeField] private float _maxProjectileDistance;
 
         [Space]
         [Header("Gun stats")]
         [SerializeField] float _msBetweenShots;
-        [SerializeField] float _reloadTime;
-        [SerializeField] int _magSize;
-        [SerializeField] FireMode _fireMode;
+        [SerializeField] private float _reloadTime;
+        [SerializeField] private int _magSize;
+        [SerializeField] private FireMode _fireMode;
 
         [Space]
         [Header("Gun Collision Mask")]
-        [SerializeField] LayerMask _collisions;
+        [SerializeField] private LayerMask _collisions;
 
         public FireMode fireMode
         {
             get => _fireMode;
             set => _fireMode = value;
         }
-        int _currentBullets;
+        private int _currentBullets;
 
-        float _fireRate;
-        bool _isReloading = false;
-        bool _isShooting = false;
-        bool _pressedTrigger = false;
-        RaycastHit? cachedRaycastHit;
-        float cachedRaycastTime;
+        private float _fireRate;
+        private bool _isReloading = false;
+        private bool _isShooting = false;
+        private bool _pressedTrigger = false;
+        private RaycastHit? cachedRaycastHit;
+        private float cachedRaycastTime;
 
-        GameObject _player;
+        private GameObject _player;
 
-        void Start()
+        private void Start()
         {
-            PooledObject.NewObjectPool(StringManager.BULLET_PISTOL, _projectile.gameObject);
+            PooledObject.NewObjectPool(_projectileKey, _projectile.gameObject);
             _player = GameObject.FindGameObjectWithTag("Player");
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InitStats();
         }
@@ -61,7 +61,7 @@ namespace Weapons {
             _currentBullets = _magSize;
         }
 
-        bool IsGunClipping()
+        private bool IsGunClipping()
         {
             float currentTime = Time.time;
 

@@ -3,8 +3,8 @@ using UnityEngine;
 public class Trail : MonoBehaviour
 {
 
-    TrailRenderer _trail;
-    void Awake()
+    private TrailRenderer _trail;
+    private void Awake()
     {
         _trail = GetComponent<TrailRenderer>();
     }

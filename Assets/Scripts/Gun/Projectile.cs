@@ -4,47 +4,46 @@ using UnityEngine;
 namespace Weapons {
     public class Projectile : MonoBehaviour
     {
-        [SerializeField] LayerMask _collisionMasks;
+        [SerializeField] private LayerMask _collisionMasks;
+        private float _speed = 1f;
+        private Vector3 _initialPosition;
+        private float _maxDistance;
+        private string _key;
 
-        float _speed = 1f;
-        Vector3 _initialPosition;
-        float _maxDistance;
-        string _key;
-
-        void Start()
+        private void Start()
         {
             _initialPosition = transform.position;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             GetComponentInChildren<TrailRenderer>().Clear();
         }
 
-        void Update()
+        private void Update()
         {
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
             CheckCollisions(.5f);
             OnMaxDistanceReached();
         }
 
-        void OnMaxDistanceReached()
+        private void OnMaxDistanceReached()
         {
             if (DidReachMaxDistance())
                 PooledObject.ReturnToPool(_key ,this.gameObject);
         }
 
-        bool DidReachMaxDistance()
+        private bool DidReachMaxDistance()
         {
             return TraveledDistance() > _maxDistance;
         }
 
-        float TraveledDistance()
+        private float TraveledDistance()
         {
             return Vector3.Distance(_initialPosition, transform.position);
         }
 
-        void CheckCollisions(float moveDistance)
+        private void CheckCollisions(float moveDistance)
         {
             Ray forwardRay = new Ray(transform.position, transform.forward);
             RaycastHit hit;
@@ -55,7 +54,7 @@ namespace Weapons {
             }
         }
 
-        void OnHitObject(RaycastHit hit)
+        private void OnHitObject(RaycastHit hit)
         {
             PooledObject.ReturnToPool(_key ,this.gameObject);
         }
@@ -66,17 +65,6 @@ namespace Weapons {
             _maxDistance = maxDistance;
             GetComponentInChildren<Trail>().SetMaterial(trailMaterial);
             _key = key; 
-
-
-            // Collider[] initialColliders = Physics.OverlapSphere(transform.position, .125f, _collisionMasks);
-            // Debug.Log($"is there initial collision? {initialColliders.Length}");
-            // if (initialColliders.Length > 0)
-            // {
-            //     RaycastHit hit;
-            //     Physics.Raycast(transform.position, initialColliders[0].transform.position, out hit);
-            //     Debug.Log(hit.collider.gameObject.name);
-            //     OnHitObject(hit);
-            // }
         } 
     }
 }
