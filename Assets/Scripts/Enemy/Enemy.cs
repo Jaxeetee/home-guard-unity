@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof (NavMeshAgent))]
-public class Enemy : StateManager<Enemy.EnemyStates> 
+public class Enemy : MonoBehaviour
 {
     public enum EnemyStates {
         IDLE,
@@ -14,34 +14,40 @@ public class Enemy : StateManager<Enemy.EnemyStates>
         DEATH
     }
 
-    private NavMeshAgent _agent;
+    [SerializeField] private NavMeshAgent _agent;
 
     private Transform _target;
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        NavMeshAgent navMeshAgent = _agent as NavMeshAgent;
-        
-
     }
 
     private void Start()
     {
-        SetNewTarget(GameObject.FindGameObjectWithTag("Player").transform);
     }
-
 
     private void OnEnable()
     {
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
+        SetNewTarget(GameObject.FindGameObjectWithTag("Player").transform);
+        StartCoroutine(UpdateTargetPosition());
     }
 
-    private void Update()
+    // private void Update()
+    // {    
+    //     _agent.SetDestination(_target.position);
+    // }
+
+    private IEnumerator UpdateTargetPosition()
     {
-        Debug.Log(_agent.agentTypeID);
-        
-        _agent.SetDestination(_target.position);
+        float frequency = 0.25f;
+
+        while (_target != null)
+        {
+            _agent.SetDestination(_target.position);
+            
+            yield return new WaitForSeconds(frequency);
+        }
     }
 
     public void SetNewTarget(Transform newTarget)
