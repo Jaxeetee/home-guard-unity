@@ -17,6 +17,7 @@ namespace Weapons {
         [SerializeField] private float _projectileVelocity;
         [SerializeField] private Material _trailMaterial;
         [SerializeField] private float _maxProjectileDistance;
+        [SerializeField] private float _damage;
 
         [Space]
         [Header("Gun stats")]
@@ -86,18 +87,19 @@ namespace Weapons {
                     }
                     _fireRate = Time.time + _msBetweenShots / 1000;
 
-                    if (IsGunClipping())
-                    {
-                        _currentBullets--;
-                    }
-                    else 
+                    if (!IsGunClipping())
                     {
                         GameObject bullet = PooledObject.GetObject(_projectileKey);
                         bullet.transform.position = _muzzlePoint.position;
                         bullet.transform.rotation = _muzzlePoint.rotation;
-                        bullet.GetComponent<Projectile>().InitializeProjectileStats(_projectileKey,_maxProjectileDistance, _projectileVelocity, _trailMaterial);
-                        _currentBullets--;
+                        bullet.GetComponent<Projectile>().InitializeProjectileStats(
+                            _projectileKey,
+                            _maxProjectileDistance, 
+                            _projectileVelocity, 
+                            _damage,
+                            _trailMaterial);
                     }
+                    _currentBullets--;
                 }
                 yield return null;
 

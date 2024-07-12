@@ -9,6 +9,7 @@ namespace Weapons {
         private Vector3 _initialPosition;
         private float _maxDistance;
         private string _key;
+        private float _damage;
 
         private void Start()
         {
@@ -56,15 +57,21 @@ namespace Weapons {
 
         private void OnHitObject(RaycastHit hit)
         {
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(_damage);
+            }
             PooledObject.ReturnToPool(_key ,this.gameObject);
         }
 
-        public void InitializeProjectileStats(string key, float speed, float maxDistance, Material trailMaterial) 
+        public void InitializeProjectileStats(string key, float speed, float maxDistance, float damage,  Material trailMaterial) 
         {
             _speed = speed;
             _maxDistance = maxDistance;
             GetComponentInChildren<Trail>().SetMaterial(trailMaterial);
             _key = key; 
+            _damage = damage;
         } 
     }
 }

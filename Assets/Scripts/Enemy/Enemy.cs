@@ -5,21 +5,15 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof (NavMeshAgent))]
-public class Enemy : MonoBehaviour
+public class Enemy : DamageableEntity
 {
-    public enum EnemyStates {
-        IDLE,
-        ATTACK,
-        CHASE,
-        DEATH
-    }
-
-    [SerializeField] private NavMeshAgent _agent;
-
+    private NavMeshAgent _agent;
     private Transform _target;
+    private string _key;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _agent = GetComponent<NavMeshAgent>();
     }
 
@@ -33,11 +27,6 @@ public class Enemy : MonoBehaviour
         StartCoroutine(UpdateTargetPosition());
     }
 
-    // private void Update()
-    // {    
-    //     _agent.SetDestination(_target.position);
-    // }
-
     private IEnumerator UpdateTargetPosition()
     {
         float frequency = 0.25f;
@@ -50,10 +39,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void SetNewTarget(Transform newTarget)
+    private void SetNewTarget(Transform newTarget)
     {
         _target = newTarget;
         
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        PooledObject.ReturnToPool(_key, this.gameObject);
+    }
+
+    public void Initialize(string key)
+    {
+        _key = key;
     }
 
 

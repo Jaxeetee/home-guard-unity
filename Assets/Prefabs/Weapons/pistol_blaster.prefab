@@ -138,6 +138,7 @@ MonoBehaviour:
   _projectileVelocity: 50
   _trailMaterial: {fileID: 2100000, guid: e62da33dbfd3db046be3debd2f3f6518, type: 2}
   _maxProjectileDistance: 20
+  _damage: 1
   _msBetweenShots: 200
   _reloadTime: 1.2
   _magSize: 12

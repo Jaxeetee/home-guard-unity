@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace MyUtils
 {
-    public abstract class StateManager<EState> : MonoBehaviour where EState : Enum
+    public abstract class StateManager<EnumState> : MonoBehaviour where EnumState : Enum
     {
-        protected Dictionary<EState, BaseState<EState>> states = new ();
-        protected BaseState<EState> currentState;
+        protected Dictionary<EnumState, BaseState<EnumState>> states = new ();
+        protected BaseState<EnumState> currentState;
         protected bool isTransitioningState = false;
 
         void Start() => currentState.EnterState();
 
         void Update() 
         {
-            EState nextStateKey = currentState.GetNextState();
-
             if (isTransitioningState) return;
+
+            EnumState nextStateKey = currentState.GetNextState();
 
             if (nextStateKey.Equals(currentState.stateKey))
             {
@@ -28,7 +28,7 @@ namespace MyUtils
             }
         }
 
-        public void TransitionToState(EState key)
+        public void TransitionToState(EnumState key)
         {
             isTransitioningState = true;
             currentState.ExitState();

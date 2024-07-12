@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyUtils;
 using System;
-public class PlayerStateManagement : StateManager<PlayerStateManagement.playerState>
+public class PlayerStateMachine : StateManager<PlayerStateMachine.playerState>
 {
 
     public enum playerState {
