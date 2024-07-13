@@ -6,7 +6,6 @@ public class MouseLook : MonoBehaviour
 {
     [SerializeField] MyPlayerInputManager _input;
     [SerializeField] LayerMask _groundMask;
-    [SerializeField] LayerMask _collisions;
     Camera _camera;
     Vector2 _mousePos;
 

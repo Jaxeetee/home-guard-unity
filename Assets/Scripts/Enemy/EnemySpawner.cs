@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        PooledObject.NewObjectPool(_poolKey, _enemy.gameObject, this.gameObject);
+        ObjectPoolManager.CreatePool(_poolKey, _enemy.gameObject, this.gameObject);
     }
 
     private void OnEnable()
@@ -43,7 +43,7 @@ public class EnemySpawner : MonoBehaviour
             if (Time.time > _frequency)
             {
                 _frequency = Time.time + _msBetweenSpawn / 1000;
-                GameObject enemy = PooledObject.GetObject(_poolKey);
+                GameObject enemy = ObjectPoolManager.GetObject(_poolKey);
                 enemy.transform.position = spawnPoint;
                 enemy.GetComponent<Enemy>().Initialize(_poolKey);
                 

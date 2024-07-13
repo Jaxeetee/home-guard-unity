@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MyUtils
 {
-    public class ObjectPool : IDebugger
+    public class PooledObjectItem : IDebugger
     {
         private string _poolName;
         private GameObject _item;
@@ -19,7 +19,7 @@ namespace MyUtils
         /// <param name="item"></param>
         /// <param name="parent"></param>
         /// <param name="amtOfCopies"></param>
-        public ObjectPool(GameObject item, GameObject parent, int amtOfCopies = 10)
+        public PooledObjectItem(GameObject item, GameObject parent, int amtOfCopies = 10)
         {
             this._poolName = $"{item.name}(Clone)";
             this._item = item;
@@ -62,7 +62,6 @@ namespace MyUtils
             GameObject toUse = _copies.Pop();
             toUse.transform.SetParent(null);
             toUse.SetActive(true);
-            toUse.transform.rotation = Quaternion.identity;
             return toUse;
         }
 
@@ -84,7 +83,6 @@ namespace MyUtils
                 return;
             }
             returnObject.transform.SetParent(_parent.transform);
-            returnObject.transform.position = Vector3.zero;
             returnObject.SetActive(false);
             _copies.Push(returnObject);
         }

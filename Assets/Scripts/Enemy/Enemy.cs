@@ -34,21 +34,19 @@ public class Enemy : DamageableEntity
         while (_target != null)
         {
             _agent.SetDestination(_target.position);
-            
             yield return new WaitForSeconds(frequency);
         }
     }
 
     private void SetNewTarget(Transform newTarget)
     {
-        _target = newTarget;
-        
+        _target = newTarget;      
     }
 
     protected override void Die()
     {
         base.Die();
-        PooledObject.ReturnToPool(_key, this.gameObject);
+        ObjectPoolManager.ReturnToPool(_key, this.gameObject);
     }
 
     public void Initialize(string key)

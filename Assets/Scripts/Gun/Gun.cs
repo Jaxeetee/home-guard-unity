@@ -11,13 +11,19 @@ namespace Weapons {
     {
         
         [Header("Projectile")]
-        [SerializeField] private string _projectileKey;
+        [SerializeField] private string _projectilePoolKey;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _muzzlePoint;
         [SerializeField] private float _projectileVelocity;
         [SerializeField] private Material _trailMaterial;
         [SerializeField] private float _maxProjectileDistance;
         [SerializeField] private float _damage;
+
+        [Header("Projectile Casings")]
+        [SerializeField] private string _ejectorPoolKey;
+        [SerializeField] private Ejector _ejector;
+        [SerializeField] private Transform _ejectorPoint;
+        [SerializeField] private float _lifeTime;
 
         [Space]
         [Header("Gun stats")]
@@ -48,7 +54,8 @@ namespace Weapons {
 
         private void Start()
         {
-            PooledObject.NewObjectPool(_projectileKey, _projectile.gameObject);
+            ObjectPoolManager.CreatePool(_ejectorPoolKey, _ejector.gameObject);
+            ObjectPoolManager.CreatePool(_projectilePoolKey, _projectile.gameObject);
             _player = GameObject.FindGameObjectWithTag("Player");
         }
 
@@ -89,15 +96,19 @@ namespace Weapons {
 
                     if (!IsGunClipping())
                     {
-                        GameObject bullet = PooledObject.GetObject(_projectileKey);
+                        GameObject bullet = ObjectPoolManager.GetObject(_projectilePoolKey);
                         bullet.transform.position = _muzzlePoint.position;
                         bullet.transform.rotation = _muzzlePoint.rotation;
                         bullet.GetComponent<Projectile>().InitializeProjectileStats(
-                            _projectileKey,
+                            _projectilePoolKey,
                             _maxProjectileDistance, 
                             _projectileVelocity, 
-                            _damage,
+                            _damage,    
                             _trailMaterial);
+                        GameObject casing = ObjectPoolManager.GetObject(_ejectorPoolKey);
+                        casing.transform.position = _ejectorPoint.position;
+                        casing.transform.rotation = _ejectorPoint.rotation;
+                        casing.GetComponent<Ejector>().InitializeEjector(_lifeTime, _ejectorPoolKey);
                     }
                     _currentBullets--;
                 }

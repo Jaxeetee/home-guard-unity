@@ -144,7 +144,7 @@ MonoBehaviour:
   _input: {fileID: 0}
   _collisions:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 15360
   _starterGun: {fileID: 7429102496269493691, guid: 69ea71be4ac1c3c4a938014ed494fe7b, type: 3}
 --- !u!1 &4899178139332704734
 GameObject:

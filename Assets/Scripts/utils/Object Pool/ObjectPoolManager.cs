@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using MyUtils;
 using UnityEngine;
+
 
 namespace MyUtils
 {
-    public static class PooledObject
+    public class ObjectPoolManager : MonoBehaviour
     {
-        private static Dictionary<string, ObjectPool> pooledDictionary = new Dictionary<string, ObjectPool>();
+        private static Dictionary<string, PooledObjectItem> pooledDictionary = new Dictionary<string, PooledObjectItem>();
 
-        public static void NewObjectPool(string key, GameObject item, GameObject parent = null, int amtOfCopies = 10)
+        public static void CreatePool(string key, GameObject item, GameObject parent = null, int amtOfCopies = 10)
         {
-            pooledDictionary.Add(key, new ObjectPool(item, parent, amtOfCopies));
+            pooledDictionary.Add(key, new PooledObjectItem(item, parent, amtOfCopies));
         }
 
         public static GameObject GetObject(string key)
         {
+            Debug.Log(pooledDictionary.Keys.Count);
             return pooledDictionary.TryGetValue(key, out var pool) ? pool.GetObject() : null;
         }
 

@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: ejector point
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3503948420082799566}
   m_LocalRotation: {x: -0, y: -0, z: 0.29776925, w: 0.9546379}
-  m_LocalPosition: {x: 0.00056, y: 0.00087, z: 0}
+  m_LocalPosition: {x: -0.0008, y: 0.0007, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -132,13 +132,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fbed1a6a3f14743b6b6cfa63c10806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileKey: bullet_pistol_blaster
+  _projectilePoolKey: bullet_pistol_blaster
   _projectile: {fileID: 2699557102204303254, guid: ccd94a81b9acaad42b7efc5b6b7a07cf, type: 3}
   _muzzlePoint: {fileID: 1191124654751692678}
   _projectileVelocity: 50
   _trailMaterial: {fileID: 2100000, guid: e62da33dbfd3db046be3debd2f3f6518, type: 2}
   _maxProjectileDistance: 20
   _damage: 1
+  _ejectorPoolKey: casing_pistol_blaster
+  _ejector: {fileID: 8480997323933218475, guid: 8c74f2b716dbae64caa6eaa426464791, type: 3}
+  _ejectorPoint: {fileID: 2407360829255754782}
+  _lifeTime: 5
   _msBetweenShots: 200
   _reloadTime: 1.2
   _magSize: 12
@@ -158,7 +162,7 @@ GameObject:
   m_Layer: 0
   m_Name: muzzle point
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

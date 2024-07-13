@@ -31,7 +31,7 @@ namespace Weapons {
         private void OnMaxDistanceReached()
         {
             if (DidReachMaxDistance())
-                PooledObject.ReturnToPool(_key ,this.gameObject);
+                ObjectPoolManager.ReturnToPool(_key ,this.gameObject);
         }
 
         private bool DidReachMaxDistance()
@@ -62,7 +62,7 @@ namespace Weapons {
             {
                 damageable.TakeDamage(_damage);
             }
-            PooledObject.ReturnToPool(_key ,this.gameObject);
+            ObjectPoolManager.ReturnToPool(_key ,this.gameObject);
         }
 
         public void InitializeProjectileStats(string key, float speed, float maxDistance, float damage,  Material trailMaterial) 
